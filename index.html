@@ -1,0 +1,82 @@
+<!-- make a simple hello world web page -->
+<html>
+<head>
+    <title>My First Web Page</title>
+</head>
+<body>
+<h1>Hello World</h1>
+</body>
+</html>
+
+<!-- Path: index.js -->
+var express = require('express');
+var app = express();
+
+app.use(express.static(__dirname));
+
+app.listen(3000, function() {
+  console.log('Example app listening on port 3000!');
+});
+
+After you have the files, run the following commands to install the required dependencies and start the server:
+
+npm install
+node index.js
+
+Then open your browser and go to http://localhost:3000. You should see a simple web page that says "Hello World".
+
+Congratulations, you have created your first web page using Node.js and Express!
+
+Step 2: Create a Web Page with Dynamic Content
+
+In this step, you will create a web page that shows a list of products. The products will be read from a SQLite database.
+
+To get started, create a new file called products.html in the same directory as index.html and index.js. Add the following HTML code to the file:
+
+<!-- Path: products.html -->
+<!-- make a simple web page that shows a list of products -->
+<html>
+<head>
+<title>Products Page</title>
+</head>
+<body>
+<h1>Products</h1>
+<ul id="products"></ul>
+<script>
+// get the products from the server
+var xhr = new XMLHttpRequest();
+xhr.open('GET', '/products');
+xhr.onload = function() {
+  if (xhr.status === 200) {
+    // add the products to the page
+    var products = JSON.parse(xhr.responseText);
+    var productsList = document.getElementById('products');
+    products.forEach(function(product) {
+      var listItem = document.createElement('li');
+      listItem.innerHTML = product.name;
+      productsList.appendChild(listItem);
+    });
+  }
+  else {
+    alert('Request failed.  Returned status of ' + xhr.status);
+  }
+};
+xhr.send();
+</script>
+</body>
+</html>
+
+This file contains the same HTML code as the index.html file. In addition, it contains a JavaScript block that gets the list of products from the server and displays them on the page.
+
+Next, modify the index.js file to add the following code:
+
+<!-- Path: index.js -->
+var express = require('express');
+var app = express();
+var sqlite3 = require('sqlite3').verbose();
+
+var db = new sqlite3.Database('products.db');
+
+app.use(express.static(__dirname));
+
+app.get
